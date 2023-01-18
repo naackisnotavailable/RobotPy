@@ -13,7 +13,7 @@ import time
 #from pynetworktables import NetworkTables
 from ntcore import _ntcore
 
- #init networktables
+ #init networktabless
 
 #tx = table.getNumber('tx',None)
 #ty = table.getNumber('ty',None)
