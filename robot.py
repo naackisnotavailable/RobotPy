@@ -13,36 +13,44 @@ class Robot(wpilib.TimedRobot):
         #navx.AHRS.create_spi(wpilib._wpilib.SPI.Port.kMXP, 500000, 60)  # try .createspi if it doesnt work
         # https://robotpy.readthedocs.io/projects/navx/en/stable/api.html
 
-        self.Talon1 = ctre._ctre.TalonFX(5)
-        self.Talon2 = ctre._ctre.TalonFX(6)
-        self.Talon3 = ctre._ctre.TalonFX(7)
-        self.Talon4 = ctre._ctre.TalonFX(8)
+        self.leftTalon1 = ctre._ctre.TalonFX(5)
+        self.leftTalon2 = ctre._ctre.TalonFX(6)
+        self.rightTalon1 = ctre._ctre.TalonFX(7)
+        self.rightTalon2 = ctre._ctre.TalonFX(8)
 
-        self.Talon1.configFactoryDefault()
-        self.Talon2.configFactoryDefault()
-        self.Talon3.configFactoryDefault()
-        self.Talon4.configFactoryDefault()
+        self.leftTalon1.configFactoryDefault()
+        self.leftTalon2.configFactoryDefault()
+        self.rightTalon1.configFactoryDefault()
+        self.rightTalon2.configFactoryDefault()
+
+        self.leftTalon1.setInverted(True)
+        self.rightTalon1.setInverted(True)
         #self.Talon1.configMotionAcceleration(0.5, 0)
-        self.leftMotor = rev.CANSparkMax(22, rev.CANSparkMax.MotorType.kBrushless)
+        self.neo1 = rev.CANSparkMax(14, rev.CANSparkMax.MotorType.kBrushless)
 
         #self.l_stick = wpilib.Joystick(0)
         #self.r_stick = wpilib.Joystick(1)
-        self.stick = wpilib.PS4Controller(int) # its something 0-5 lol
+        self.stick = wpilib.XboxController(0) # its something 0-5 lol
 
     def teleopPeriodic(self):
         #table = NetworkTables.getTable("limelight")
         #self.rightMotor.set(ctre._ctre.TalonFXControlMode.PercentOutput, float(0.5))
-
-        connectStick = self.stick.isConnected
-        if connectStick == True:
-            self.leftMotor.set(0.5)
-        sped = self.stick.getLeftY
-
-        self.Talon1.set(ctre._ctre.ControlMode.PercentOutput, sped, ctre._ctre.DemandType.AuxPID, 0.5) 
-        self.Talon2.set(ctre._ctre.ControlMode.PercentOutput, sped, ctre._ctre.DemandType.AuxPID, 0.5)
-        self.Talon3.set(ctre._ctre.ControlMode.PercentOutput, sped, ctre._ctre.DemandType.AuxPID, 0.5)
-        self.Talon4.set(ctre._ctre.ControlMode.PercentOutput, sped, ctre._ctre.DemandType.AuxPID, 0.5)
-
+        sped = self.stick.getLeftY()
+        if abs(sped) >= 0.05:
+            self.neo1.set(float(sped))
+        #sped = bool(self.stick.getAButtonPressed)
+        #while True:
+        #    if sped == True:
+#
+        #        self.Talon1.set(ctre.ControlMode.PercentOutput, 0.25) 
+        #        self.Talon2.set(ctre.ControlMode.PercentOutput, 0.25)
+        #        self.Talon3.set(ctre.ControlMode.PercentOutput, 0.25)
+        #        self.Talon4.set(ctre.ControlMode.PercentOutput, 0.25)
+        #    elif sped == False:
+        #        self.Talon1.set(ctre.ControlMode.PercentOutput, 0.0) 
+        #        self.Talon2.set(ctre.ControlMode.PercentOutput, 0.0)
+        #        self.Talon3.set(ctre.ControlMode.PercentOutput, 0.0)
+        #        self.Talon4.set(ctre.ControlMode.PercentOutput, 0.0)
 
 if __name__ == "__main__":
     wpilib.run(Robot)
