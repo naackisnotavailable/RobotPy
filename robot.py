@@ -4,6 +4,8 @@ import wpilib.drive
 import rev
 import ctre
 import time
+import wpilib.interfaces
+
 #from ctre import _ctre as ct
 #from networktables import NetworkTable
 #import cv2
@@ -13,19 +15,16 @@ import time
 #from networktables import NetworkTables
 #from pynetworktables import NetworkTables
 from ntcore import _ntcore
+import navx
 
- #init networktabless
 
-#tx = table.getNumber('tx',None)
-#ty = table.getNumber('ty',None)
-#ta = table.getNumber('ta',None)
-#ts = table.getNumber('ts',None)
-
+rightMotor11 = ctre.TalonFX(13)
+rightMotor11.configAllSettings(ctre.TalonFXConfiguration, 0)
 class Robot(wpilib.TimedRobot):
     def robotInit(self):
         #time.sleep(5.0)
-
-        #NetworkTables.initialize(server='10.55.30.2')
+        navx.AHRS.__init__(wpilib._wpilib.SPI.Port.kMXP, 500000, 60)  # try .createspi if it doesnt work
+        # https://robotpy.readthedocs.io/projects/navx/en/stable/api.html
         self.rightMotor1 = ctre._ctre.TalonFX(5)
         self.rightMotor2 = ctre._ctre.TalonFX(6)
         self.leftMotor1 = ctre._ctre.TalonFX(7)
@@ -34,8 +33,8 @@ class Robot(wpilib.TimedRobot):
         #self.rightMotor.configAllSettings(ct.TalonFX, ct.TalonFXConfiguration, 50)
         #self.driveTrain = DifferentialDrive(self.leftMotor, self.rightMotor)
         self.leftMotor = rev.CANSparkMax(22, rev.CANSparkMax.MotorType.kBrushless)
+
         #self.rightMotor = ctre.TalonFX(5)
-        #wpilib.CameraServer.launch()
 
         #self.l_stick = wpilib.Joystick(0)
         #self.r_stick = wpilib.Joystick(1)
@@ -74,6 +73,9 @@ class Robot(wpilib.TimedRobot):
         #    elif tv == 0:
         #        self.leftMotor.setVoltage(0.0)
         #    time.sleep(1)
+    def autonomousPeriodic(self) -> None:
+
+        return super().autonomousPeriodic()
         
 
 
