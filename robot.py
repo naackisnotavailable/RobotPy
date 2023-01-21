@@ -8,10 +8,6 @@ import wpilib.interfaces
 
 class Robot(wpilib.TimedRobot):
     def robotInit(self):
-        #time.sleep(5.0)
-        #navx.AHRS.create_spi(wpilib._wpilib.SPI.Port.kMXP, 500000, 60)  # try .createspi if it doesnt work
-        # https://robotpy.readthedocs.io/projects/navx/en/stable/api.html
-        #self.Talon1.configMotionAcceleration(0.5, 0)
 
         self.neo1 = rev.CANSparkMax(14, rev.CANSparkMax.MotorType.kBrushless)
         self.leftTalon1 = ctre.TalonFX(5)
